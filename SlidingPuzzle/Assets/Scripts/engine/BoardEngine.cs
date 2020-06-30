@@ -1,17 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
+using System.Linq;
 using Assets.Scripts.model;
-using Debug = UnityEngine.Debug;
 
 namespace Assets.Scripts.engine
 {
     public class BoardEngine
     {
         public List<Movement> Movements { get; private set; }
-
         private const int TOTAL_PER_LINE = 3;
-
         private static readonly List<int> solvedProblem = new List<int> { 1, 2, 3, 4, 5, 6, 7, 8, 0 };
 
         public BoardEngine()
@@ -27,8 +24,6 @@ namespace Assets.Scripts.engine
 
             for (int i = 0; i < bucket.Count; i++)
             {
-                Debug.LogWarning("Get: " + bucket[i]);
-
                 Movements.Add(new Movement(i,bucket[i], new Tuple<int, int>(line, column)));
 
                 column++;
@@ -68,21 +63,7 @@ namespace Assets.Scripts.engine
 
         public bool FinishGame()
         {
-            string str = "current board : ";
-            
-            Movements.ForEach(m => { str += m.Number + ","; });
-            
-            Debug.LogWarning(str);
-
-            for (int i = 0; i < Movements.Count; i++)
-            {
-                if (solvedProblem[i] != Movements[i].Number)
-                {
-                    return false;
-                }
-            }
-
-            return true;
+            return !Movements.Where((t, i) => solvedProblem[i] != t.Number).Any();
         }
 
         public Tuple<int,int> ValidateMovement(Movement currentMovement)

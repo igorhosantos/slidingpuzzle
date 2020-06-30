@@ -10,7 +10,6 @@ using UnityEngine.UI;
 public class PieceView : MonoBehaviour
 {
     [SerializeField] private Text label;
-    [SerializeField] private Text debug;
     [SerializeField] private Button button;
     [SerializeField] private RectTransform piecePosition;
 
@@ -40,8 +39,6 @@ public class PieceView : MonoBehaviour
                 -(InitialPosition.y + (tuple.Item1 * 100))), 0.2f);
 
         Movement.SwapTuple(tuple);
-
-        debug.text = Movement.Tuple.Item1 + " , " + Movement.Tuple.Item2;
     }
 
     public void ExecuteMovement(Movement movement, bool forceMovement)
@@ -50,8 +47,6 @@ public class PieceView : MonoBehaviour
             new Vector2(InitialPosition.x + (movement.Tuple.Item2 * 100), -(InitialPosition.y + (movement.Tuple.Item1 * 100)));
 
         Movement.SwapTuple(movement.Tuple);
-
-        debug.text = Movement.Tuple.Item1 + " , " + Movement.Tuple.Item2;
     }
 
     public void Disable()
