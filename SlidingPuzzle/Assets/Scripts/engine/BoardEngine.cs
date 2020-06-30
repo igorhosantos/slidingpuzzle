@@ -17,17 +17,27 @@ namespace Assets.Scripts.engine
         public BoardEngine()
         {
             Movements = new List<Movement>();
-            List<int> bucket = new List<int> { 1, 4, 7, 2, 5, 0, 3, 6, 8 };//ValidNumberBucket.Generate();
+
+            //easy way to debugging list
+            ////new List<int> { 1, 4, 7, 2, 5, 0, 3, 6, 8 };
+            List<int> bucket = ValidNumberBucket.Generate();
 
             int count = 0;
             for (int i = 0; i < TOTAL_LINES; i++)
             {
                 for (int j = 0; j < TOTAL_COLUMN; j++)
                 {
-                    Movements.Add(new Movement(bucket[count], new Tuple<int, int>(i, j)));
+                    Movements.Add(new Movement(count,bucket[count], new Tuple<int, int>(i, j)));
                     count++;
                 }
             }
+        }
+
+        public void UpdateBoard(Movement current, Movement target)
+        {
+            Movement temp = current;
+            Movements[GetIndexPosition(current)] = target;
+            Movements[GetIndexPosition(target)] = temp;
         }
 
         private Movement GetMovementPerTuple(Tuple<int, int> currentTuple)
@@ -35,12 +45,21 @@ namespace Assets.Scripts.engine
             return Movements.Find(m => m.Tuple.Item1 == currentTuple.Item1 && m.Tuple.Item2 == currentTuple.Item2);
         }
 
+        private int GetIndexPosition(Movement movement)
+        {
+            for (int i = 0; i < Movements.Count; i++)
+            {
+                if (Movements[i].Id == movement.Id)
+                {
+                    return i;
+                }
+            }
+
+            return -1;
+        }
+
         public bool FinishGame()
         {
-            string logCheck = "board: ";
-            Movements.ForEach(m => { logCheck += m.Number + ","; });
-            
-            Debug.LogWarning(logCheck);
             for (int i = 0; i < Movements.Count; i++)
             {
                 if (solvedProblem[i] != Movements[i].Number)
@@ -52,56 +71,38 @@ namespace Assets.Scripts.engine
             return true;
         }
 
-        public Movement ValidateMovement(Movement currentMovement)
+        public Tuple<int,int> ValidateMovement(Movement currentMovement)
         {
             Movement movement = FindEmptySpace(currentMovement.Tuple);
-            if (movement!=null)
+            if (movement != null)
             {
-                var validMovement = new Movement(currentMovement.Number, movement.Tuple);
-                UpdateMovementList(currentMovement,movement);
-                return validMovement;
+                Tuple<int,int> tp = movement.Tuple;
+                movement.SwapTuple(currentMovement.Tuple);
+                UpdateBoard(currentMovement, movement);
+
+                return tp;
             }
 
             return null;
-        }
-
-        private void UpdateMovementList(Movement current, Movement target)
-        {
-            target.SwapTuple(current.Tuple);
         }
 
         private Movement FindEmptySpace(Tuple<int,int> currentTuple)
         {
-            //left
             Movement left = GetMovementPerTuple(new Tuple<int, int>(currentTuple.Item1 - 1, currentTuple.Item2));
-            if (left != null && left.Number == 0)
-            {
-                return left;
-            }
-
+            if (left != null && left.Number == 0) return left;
+           
             Movement right = GetMovementPerTuple(new Tuple<int, int>(currentTuple.Item1 + 1, currentTuple.Item2));
-            if (right != null && right.Number == 0)
-            {
-                return right;
-            }
+            if (right != null && right.Number == 0) return right;
+            
 
             Movement up = GetMovementPerTuple(new Tuple<int, int>(currentTuple.Item1, currentTuple.Item2-1));
-            if (up != null && up.Number == 0)
-            {
-                return up;
-            }
-
+            if (up != null && up.Number == 0) return up;
+           
             Movement down = GetMovementPerTuple(new Tuple<int, int>(currentTuple.Item1, currentTuple.Item2+1));
-            if (down != null && down.Number == 0)
-            {
-                return down;
-            }
-
-
+            if (down != null && down.Number == 0) return down;
+            
             return null;
         }
-
-        
 
     }
 }

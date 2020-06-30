@@ -6,9 +6,11 @@ namespace Assets.Scripts.model
     {
         public int Number { get; private set; }
         public Tuple<int,int> Tuple { get; private set; }
+        public int Id { get; private set; }
         
-        public Movement(int number, Tuple<int, int> tuple)
+        public Movement(int id,int number, Tuple<int, int> tuple)
         {
+            Id = id;
             Number = number;
             Tuple = tuple;
         }

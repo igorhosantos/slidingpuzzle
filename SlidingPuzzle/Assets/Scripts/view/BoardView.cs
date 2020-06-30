@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using Assets.Scripts.engine;
 using Assets.Scripts.model;
@@ -32,12 +33,12 @@ public class BoardView : MonoBehaviour
 
     public void ReceiveMovement(PieceView piece)
     {
-        Movement validatedMovement = engine.ValidateMovement(piece.Movement);
-        if (validatedMovement != null)
+        Tuple<int,int> validated = engine.ValidateMovement(piece.Movement);
+        if (validated != null)
         {
             //executa
             Debug.LogWarning("MOVIMENTO VALIDO ! ");
-            piece.ExecuteMovement(validatedMovement);
+            piece.ExecuteMovement(validated);
             if (engine.FinishGame())
             {
                 WinnerGame();

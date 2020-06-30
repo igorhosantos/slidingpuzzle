@@ -11,12 +11,14 @@ namespace Assets.Scripts.engine
         private static int InvertedCount(int[,] arr)
         {
             var count = 0;
-            for (int i = 0; i < 3 - 1; i++)
-            for (int j = i + 1; j < 3; j++)
-
-                if (arr[j, i] > 0 && arr[j, i] > arr[i, j])
-                    count++;
-
+            for (int i = 0; i < arr.GetLength(0) - 1; i++)
+            {
+                for (int j = i+1; j < arr.GetLength(1); j++)
+                {
+                    if (arr[j, i] > 0 && arr[j, i] > arr[i, j])
+                        count++;
+                }
+            }
             return count;
         }
 
@@ -25,7 +27,7 @@ namespace Assets.Scripts.engine
         public static List<int> Generate()
         {
             List<int> currentNumbers;
-            int[,] puzzle = new int[3, 3];
+            int[,] puzzle = new int[3,3];
 
             do
             {

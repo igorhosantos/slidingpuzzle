@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using Assets.Scripts.model;
 using DG.Tweening;
@@ -31,13 +32,13 @@ public class PieceView : MonoBehaviour
         RequestMovement?.Invoke(this);
     }
 
-    public void ExecuteMovement(Movement movement)
+    public void ExecuteMovement(Tuple<int, int> tuple)
     {
         piecePosition.DOAnchorPos(
-            new Vector2(InitialPosition.x + (movement.Tuple.Item1 * 100),
-                -(InitialPosition.y + (movement.Tuple.Item2 * 100))), 0.2f);
+            new Vector2(InitialPosition.x + (tuple.Item1 * 100),
+                -(InitialPosition.y + (tuple.Item2 * 100))), 0.2f);
 
-        Movement.SwapTuple(movement.Tuple);
+        Movement.SwapTuple(tuple);
     }
 
     public void ExecuteMovement(Movement movement, bool forceMovement)
