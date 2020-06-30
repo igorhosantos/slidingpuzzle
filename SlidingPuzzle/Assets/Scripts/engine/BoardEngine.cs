@@ -10,25 +10,30 @@ namespace Assets.Scripts.engine
     {
         public List<Movement> Movements { get; private set; }
 
-        private const int TOTAL_LINES = 3;
-        private const int TOTAL_COLUMN = 3;
-        private static readonly List<int> solvedProblem = new List<int> { 1, 4, 7, 2, 5, 8, 3, 6, 0 };
+        private const int TOTAL_PER_LINE = 3;
+
+        private static readonly List<int> solvedProblem = new List<int> { 1, 2, 3, 4, 5, 6, 7, 8, 0 };
 
         public BoardEngine()
         {
             Movements = new List<Movement>();
 
             //easy way to debugging list
-            ////new List<int> { 1, 4, 7, 2, 5, 0, 3, 6, 8 };
+            ////new List<int> { 1, 2, 3, 4, 5, 6, 0, 7, 8 };////
             List<int> bucket = ValidNumberBucket.Generate();
 
-            int count = 0;
-            for (int i = 0; i < TOTAL_LINES; i++)
+            int line = 0;
+            int column = 0;
+
+            for (int i = 0; i < bucket.Count; i++)
             {
-                for (int j = 0; j < TOTAL_COLUMN; j++)
+                Movements.Add(new Movement(i,bucket[i], new Tuple<int, int>(line, column)));
+
+                line++;
+                if (line == TOTAL_PER_LINE)
                 {
-                    Movements.Add(new Movement(count,bucket[count], new Tuple<int, int>(i, j)));
-                    count++;
+                    column++;
+                    line = 0;
                 }
             }
         }
