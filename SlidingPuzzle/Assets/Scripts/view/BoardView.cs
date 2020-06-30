@@ -34,18 +34,12 @@ public class BoardView : MonoBehaviour
         Tuple<int,int> validated = engine.ValidateMovement(piece.Movement);
         if (validated != null)
         {
-            //executa
-            Debug.LogWarning("MOVIMENTO VALIDO ! ");
             piece.ExecuteMovement(validated);
             if (engine.FinishGame())
             {
                 WinnerGame();
             }
             
-        }
-        else
-        {
-            Debug.LogWarning("MOVIMENTO INVALIDO ! ");
         }
     }
 

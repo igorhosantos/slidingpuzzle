@@ -27,22 +27,25 @@ namespace Assets.Scripts.engine
 
             for (int i = 0; i < bucket.Count; i++)
             {
+                Debug.LogWarning("Get: " + bucket[i]);
+
                 Movements.Add(new Movement(i,bucket[i], new Tuple<int, int>(line, column)));
 
-                line++;
-                if (line == TOTAL_PER_LINE)
+                column++;
+                if (column == TOTAL_PER_LINE)
                 {
-                    column++;
-                    line = 0;
+                    line++;
+                    column = 0;
                 }
             }
         }
 
         public void UpdateBoard(Movement current, Movement target)
         {
+            int indexToMovement = GetIndexPosition(target);
             Movement temp = current;
             Movements[GetIndexPosition(current)] = target;
-            Movements[GetIndexPosition(target)] = temp;
+            Movements[indexToMovement] = temp;
         }
 
         private Movement GetMovementPerTuple(Tuple<int, int> currentTuple)
@@ -65,6 +68,12 @@ namespace Assets.Scripts.engine
 
         public bool FinishGame()
         {
+            string str = "current board : ";
+            
+            Movements.ForEach(m => { str += m.Number + ","; });
+            
+            Debug.LogWarning(str);
+
             for (int i = 0; i < Movements.Count; i++)
             {
                 if (solvedProblem[i] != Movements[i].Number)

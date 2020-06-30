@@ -36,8 +36,8 @@ public class PieceView : MonoBehaviour
     public void ExecuteMovement(Tuple<int, int> tuple)
     {
         piecePosition.DOAnchorPos(
-            new Vector2(InitialPosition.x + (tuple.Item1 * 100),
-                -(InitialPosition.y + (tuple.Item2 * 100))), 0.2f);
+            new Vector2(InitialPosition.x + (tuple.Item2 * 100),
+                -(InitialPosition.y + (tuple.Item1 * 100))), 0.2f);
 
         Movement.SwapTuple(tuple);
 
@@ -47,7 +47,7 @@ public class PieceView : MonoBehaviour
     public void ExecuteMovement(Movement movement, bool forceMovement)
     {
         piecePosition.anchoredPosition =
-            new Vector2(InitialPosition.x + (movement.Tuple.Item1 * 100), -(InitialPosition.y + (movement.Tuple.Item2 * 100)));
+            new Vector2(InitialPosition.x + (movement.Tuple.Item2 * 100), -(InitialPosition.y + (movement.Tuple.Item1 * 100)));
 
         Movement.SwapTuple(movement.Tuple);
 
