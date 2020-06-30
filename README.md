@@ -1,4 +1,4 @@
-Simple Sliding Puzle 3x3 with Unity3D / C#
+Simple Sliding Puzzle 3x3 with Unity and C#
 
 - using Dotween to external tool 
 
