@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using Assets.Scripts.model;
+using DG.Tweening;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
@@ -22,7 +23,7 @@ public class PieceView : MonoBehaviour
         Movement = movement;
         label.text = movement.Number.ToString();
         button.onClick.AddListener(TryMovement);
-        ExecuteMovement(movement);
+        ExecuteMovement(movement,true);
     }
 
     private void TryMovement()
@@ -32,9 +33,23 @@ public class PieceView : MonoBehaviour
 
     public void ExecuteMovement(Movement movement)
     {
-        piecePosition.anchoredPosition =
-            new Vector2(InitialPosition.x + (movement.Tuple.Item1*100), -(InitialPosition.y + (movement.Tuple.Item2*100)));
+        piecePosition.DOAnchorPos(
+            new Vector2(InitialPosition.x + (movement.Tuple.Item1 * 100),
+                -(InitialPosition.y + (movement.Tuple.Item2 * 100))), 0.2f);
 
         Movement.SwapTuple(movement.Tuple);
+    }
+
+    public void ExecuteMovement(Movement movement, bool forceMovement)
+    {
+        piecePosition.anchoredPosition =
+            new Vector2(InitialPosition.x + (movement.Tuple.Item1 * 100), -(InitialPosition.y + (movement.Tuple.Item2 * 100)));
+
+        Movement.SwapTuple(movement.Tuple);
+    }
+
+    public void Disable()
+    {
+        button.enabled = false;
     }
 }
